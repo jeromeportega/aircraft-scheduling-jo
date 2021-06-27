@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import './App.css';
+
+import ScrollableList from '../ScrollableList';
 
 const App = () => {
   const [flights, setFlights] = React.useState([]);
@@ -8,17 +11,18 @@ const App = () => {
   React.useEffect(() => {
     axios.get('https://infinite-dawn-93085.herokuapp.com/flights').then(response => {
       console.log(response);
-      setFlights(response.data);
+      setFlights(response.data.data);
     });
     axios.get('https://infinite-dawn-93085.herokuapp.com/aircrafts').then(response => {
       console.log(response);
-      setAircraft(response.data);
+      setAircraft(response.data.data);
     });
   }, []);
 
   return (
-    <div>
-      Hello World
+    <div className="app-container">
+      <ScrollableList itemType='aircraft' items={aircraft} />
+      <ScrollableList itemType='flight' items={flights} />
     </div>
   );
 }
