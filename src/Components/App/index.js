@@ -25,15 +25,34 @@ const App = () => {
     });
   }, []);
 
+  // @TODO: Validation for if a flight can be added to the rotation.
   const addFlightToRotation = (flight) => {
+    if (rotation.some(rotationItem => flight.id === rotationItem.id)) {
+      return;
+    }
+
     setRotation([...rotation, flight]);
   }
 
+  const removeFlightFromRotation = (flight) => {
+    setRotation(rotation.filter(rotationItem => flight.id !== rotationItem.id));
+  }
+
+  const dataLoaded = () => (
+    flights.length > 0 &&
+    aircrafts.length > 0 &&
+    Object.keys(selectedAircraft).length !== 0
+  );
+
   return (
     <div className="app-container">
-      <ScrollableList itemType='aircraft' items={aircrafts} header='Aircrafts' />
-      <ScrollableList itemType='aircraft' items={rotation} header={`Rotation ${selectedAircraft.ident}`} />
-      <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotation} />
+      {dataLoaded() &&
+        <React.Fragment>
+          <ScrollableList itemType='aircraft' items={aircrafts} header='Aircrafts' />
+          <ScrollableList itemType='rotation' items={rotation} header={`Rotation ${selectedAircraft.ident}`} onItemClick={removeFlightFromRotation} />
+          <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotation} />
+        </React.Fragment>
+      }
     </div>
   );
 }
