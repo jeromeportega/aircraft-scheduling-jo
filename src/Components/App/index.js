@@ -39,7 +39,7 @@ const App = () => {
     }
 
     setErrorMessage(validationResult.error);
-    setTimeout(() => setErrorMessage(''), 3000);
+    setTimeout(() => setErrorMessage(''), 10000);
   }
 
   const addFlightToRotation = (flight) => {
