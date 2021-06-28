@@ -1,4 +1,13 @@
 .scrollable-container {
-  height: 100px;
+  height: 500px;
   overflow-y: scroll;
+  /* box-shadow: 0px 0px 25px 3px #000000; */
+  border-top: 5px solid black;
+  border-bottom: 5px solid black;
+  padding-left: 10px;
+}
+
+.scrollable-container-header {
+  margin: 20px auto;
+  text-align: center;
 }

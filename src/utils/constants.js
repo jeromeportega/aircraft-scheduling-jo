@@ -1,4 +1,13 @@
+import AircraftItem from "../Components/ScrollableList/AircraftItem";
+import FlightItem from "../Components/ScrollableList/FlightItem";
+
 export const listItemComponents = {
-  aircraft: () => <div>Aircraft</div>,
-  flight: () => <div>Flight</div>,
+  aircraft: {
+    Component: AircraftItem,
+    key: 'ident'
+  },
+  flight: {
+    Component: FlightItem,
+    key: 'id',
+  }
 }
