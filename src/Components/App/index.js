@@ -4,6 +4,9 @@ import './App.css';
 
 import ScrollableList from '../ScrollableList';
 
+import { sortByArrivalTime } from '../../utils/general';
+import { canAddFlightToRotation } from '../../utils/validation';
+
 const App = () => {
   const [flights, setFlights] = React.useState([]);
   const [aircrafts, setAircrafts] = React.useState([]);
@@ -25,15 +28,14 @@ const App = () => {
 
   // @TODO: Add validation to see if flight can be added to rotation.
   const addFlightToRotation = (flight) => {
-    if (rotation.some(rotationItem => flight.id === rotationItem.id)) {
-      return;
+    if (rotation.length < 1 || canAddFlightToRotation) {
+      setRotation([...rotation, flight].sort(sortByArrivalTime));
+      setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
     }
-
-    setRotation([...rotation, flight]);
-    setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
   }
 
   const removeFlightFromRotation = (flight) => {
+    setFlights([...flights, flight]);
     setRotation(rotation.filter(rotationItem => flight.id !== rotationItem.id));
   }
 
