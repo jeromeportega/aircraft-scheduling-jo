@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './ScrollableList.css';
 import { listItemComponents } from '../../utils/constants';
 
-const ScrollableList = ({itemType, header, items, selectedItems, onItemClick}) => {
+const ScrollableList = ({itemType, header, items, onItemClick}) => {
   const renderItems = () => {
     const ItemComponent = listItemComponents[itemType].Component;
     return items.map(item => <ItemComponent item={item} key={item[listItemComponents[itemType].key]} onItemClick={onItemClick} />);
@@ -12,10 +12,12 @@ const ScrollableList = ({itemType, header, items, selectedItems, onItemClick}) =
   return (
     <div>
       <h2 className="scrollable-container-header">{header}</h2>
-      {items.length > 0 &&
-        <div className="scrollable-container">
-          {renderItems()}
-        </div>
+      {items.length < 1 ?
+          <div className="no-items">No Items Yet</div>
+        :
+          <div className="scrollable-container">
+            {renderItems()}
+          </div>
       }
     </div>
   );

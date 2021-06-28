@@ -12,47 +12,36 @@ const App = () => {
 
   React.useEffect(() => {
     axios.get('https://infinite-dawn-93085.herokuapp.com/flights').then(response => {
-      console.log(response.data.data);
       setFlights(response.data.data);
     });
   }, []);
   
   React.useEffect(() => {
     axios.get('https://infinite-dawn-93085.herokuapp.com/aircrafts').then(response => {
-      console.log(response);
       setAircrafts(response.data.data);
       setSelectedAircraft(response.data.data[0]);
     });
   }, []);
 
-  // @TODO: Validation for if a flight can be added to the rotation.
+  // @TODO: Add validation to see if flight can be added to rotation.
   const addFlightToRotation = (flight) => {
     if (rotation.some(rotationItem => flight.id === rotationItem.id)) {
       return;
     }
 
     setRotation([...rotation, flight]);
+    setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
   }
 
   const removeFlightFromRotation = (flight) => {
     setRotation(rotation.filter(rotationItem => flight.id !== rotationItem.id));
   }
 
-  const dataLoaded = () => (
-    flights.length > 0 &&
-    aircrafts.length > 0 &&
-    Object.keys(selectedAircraft).length !== 0
-  );
-
   return (
     <div className="app-container">
-      {dataLoaded() &&
-        <React.Fragment>
-          <ScrollableList itemType='aircraft' items={aircrafts} header='Aircrafts' />
-          <ScrollableList itemType='rotation' items={rotation} header={`Rotation ${selectedAircraft.ident}`} onItemClick={removeFlightFromRotation} />
-          <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotation} />
-        </React.Fragment>
-      }
+      <ScrollableList itemType='aircraft' items={aircrafts} header='Aircrafts' />
+      <ScrollableList itemType='rotation' items={rotation} header={`Rotation ${selectedAircraft.ident}`} onItemClick={removeFlightFromRotation} />
+      <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotation} />
     </div>
   );
 }
