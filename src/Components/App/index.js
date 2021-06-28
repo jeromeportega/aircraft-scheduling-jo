@@ -28,7 +28,7 @@ const App = () => {
 
   // @TODO: Add validation to see if flight can be added to rotation.
   const addFlightToRotation = (flight) => {
-    if (rotation.length < 1 || canAddFlightToRotation) {
+    if (rotation.length < 1 || canAddFlightToRotation(rotation, flight)) {
       setRotation([...rotation, flight].sort(sortByArrivalTime));
       setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
     }
