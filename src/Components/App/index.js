@@ -12,6 +12,7 @@ const App = () => {
   const [aircrafts, setAircrafts] = React.useState([]);
   const [rotation, setRotation] = React.useState([]);
   const [selectedAircraft, setSelectedAircraft] = React.useState({});
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   React.useEffect(() => {
     axios.get('https://infinite-dawn-93085.herokuapp.com/flights').then(response => {
@@ -27,11 +28,23 @@ const App = () => {
   }, []);
 
   // @TODO: Add validation to see if flight can be added to rotation.
-  const addFlightToRotation = (flight) => {
-    if (rotation.length < 1 || canAddFlightToRotation(rotation, flight)) {
-      setRotation([...rotation, flight].sort(sortByArrivalTime));
-      setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
+  const addFlightToRotationClickHandler = (flight) => {
+    if (rotation.length < 1) {
+      return addFlightToRotation(flight);
     }
+
+    const validationResult = canAddFlightToRotation(rotation, flight);
+    if (validationResult.canAddFlight) {
+      return addFlightToRotation(flight);
+    }
+
+    setErrorMessage(validationResult.error);
+    setTimeout(() => setErrorMessage(''), 3000);
+  }
+
+  const addFlightToRotation = (flight) => {
+    setRotation([...rotation, flight].sort(sortByArrivalTime));
+    setFlights(flights.filter(currentFlight => currentFlight.id !== flight.id));
   }
 
   const removeFlightFromRotation = (flight) => {
@@ -42,8 +55,8 @@ const App = () => {
   return (
     <div className="app-container">
       <ScrollableList itemType='aircraft' items={aircrafts} header='Aircrafts' />
-      <ScrollableList itemType='rotation' items={rotation} header={`Rotation ${selectedAircraft.ident}`} onItemClick={removeFlightFromRotation} />
-      <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotation} />
+      <ScrollableList itemType='rotation' items={rotation} header={`Rotation ${selectedAircraft.ident}`} onItemClick={removeFlightFromRotation} error={errorMessage} />
+      <ScrollableList itemType='flight' items={flights} header='Flights' onItemClick={addFlightToRotationClickHandler} />
     </div>
   );
 }

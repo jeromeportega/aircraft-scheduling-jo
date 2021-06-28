@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './ScrollableList.css';
 import { listItemComponents } from '../../utils/constants';
 
-const ScrollableList = ({itemType, header, items, onItemClick}) => {
+const ScrollableList = ({ itemType, header, items, onItemClick, error }) => {
   const renderItems = () => {
     const ItemComponent = listItemComponents[itemType].Component;
     return items.map(item => <ItemComponent item={item} key={item[listItemComponents[itemType].key]} onItemClick={onItemClick} />);
@@ -19,6 +19,7 @@ const ScrollableList = ({itemType, header, items, onItemClick}) => {
             {renderItems()}
           </div>
       }
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };
@@ -28,6 +29,7 @@ ScrollableList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   header: PropTypes.string.isRequired,
   onItemClick: PropTypes.func,
+  error: PropTypes.string,
 }
 
 export default ScrollableList;

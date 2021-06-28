@@ -15,3 +15,10 @@
 .no-items {
   text-align: center;
 }
+
+.error-message {
+  max-width: 300px;
+  color: red;
+  text-align: center;
+  margin: 0 auto;
+}
