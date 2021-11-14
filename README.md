@@ -5,4 +5,4 @@ In order to boot this app, just clone this repo and follow these directions:
 3. Run `yarn start`
 4. Navigate to `localhost:3000`
 
-It is also deployed @ https://round-drop.surge.sh/ if you'd like to check it out live.
+Unfortunately, the API this small app was reaching out for is no longer deployed.
